@@ -1,0 +1,20 @@
+body{
+	background-color: #9fcaff;
+}
+fieldset{
+	margin: 0 auto;
+	margin-top: 80px;
+	width: 250px;
+	background-color: #e9f2ff;
+}
+.submitbutton{
+	margin-top: 10px;
+	float: right;
+}
+
+input{
+	margin-left: 10px;
+}
+label{
+	margin-left: 10px;
+}
