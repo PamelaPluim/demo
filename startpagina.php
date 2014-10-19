@@ -12,12 +12,12 @@ if (isset($_POST['username'])) {
 	}
 	$username = mysqli_real_escape_string($con, $_POST['username']);
 	$password = mysqli_real_escape_string($con, $_POST["password"]);
-	$query = "select * from `users` where `username` = '" . $username . "' and `password` = '" . $password . "'";
+	$query = "select * from `users` where `username` = '" . $username . "' and `password` = '" . md5($password) . "'";
 	if (!$result = $con->query($query)) {
 		die("error");
 	}
 	while ($row = $result->fetch_assoc()) {
-		if ($row['password'] == $password) {
+		if ($row['password'] == md5($password)) {
 			$_SESSION['loggedin'] = true;
 			$_SESSION['username'] = $row['username'];
 		}
