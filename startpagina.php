@@ -1,20 +1,24 @@
 <?php
 session_start();
+require 'class.database.php';
+
 if (isset($_GET['logout'])) {
 	session_destroy();
-	header('Location: startpagina.php');
+	header('Location: /week2/startpagina.php');
 }
 
 if (isset($_POST['username'])) {
-	$con = mysqli_connect("localhost", "root", "welkompamela", "demo");
-	if (mysqli_connect_errno()) {
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+	$oDatabase = mysql::getInstance();
+	$con = $oDatabase::getStaticDatabase();
 	$username = mysqli_real_escape_string($con, $_POST['username']);
 	$password = mysqli_real_escape_string($con, $_POST["password"]);
 	$query = "select * from `users` where `username` = '" . $username . "' and `password` = '" . md5($password) . "'";
-	if (!$result = $con->query($query)) {
+	$result = $con->query($query);
+	if (!$result){
 		die("error");
+	}
+	if($result->num_rows > 1){
+		echo "Verkeerde usernaam of password";
 	}
 	while ($row = $result->fetch_assoc()) {
 		if ($row['password'] == md5($password)) {
