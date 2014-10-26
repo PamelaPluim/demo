@@ -1,31 +1,14 @@
 <?php
-session_start();
-require 'class.database.php';
+require './class.user.php';
+
 
 if (isset($_GET['logout'])) {
-	session_destroy();
+	user::logout();
 	header('Location: /week2/startpagina.php');
 }
 
 if (isset($_POST['username'])) {
-	$oDatabase = mysql::getInstance();
-	$con = $oDatabase::getStaticDatabase();
-	$username = mysqli_real_escape_string($con, $_POST['username']);
-	$password = mysqli_real_escape_string($con, $_POST["password"]);
-	$query = "select * from `users` where `username` = '" . $username . "' and `password` = '" . md5($password) . "'";
-	$result = $con->query($query);
-	if (!$result){
-		die("error");
-	}
-	if($result->num_rows > 1){
-		echo "Verkeerde usernaam of password";
-	}
-	while ($row = $result->fetch_assoc()) {
-		if ($row['password'] == md5($password)) {
-			$_SESSION['loggedin'] = true;
-			$_SESSION['username'] = $row['username'];
-		}
-	}
+	user::login($_POST['username'], $_POST['password']);
 }
 ?>
 
@@ -37,7 +20,7 @@ if (isset($_POST['username'])) {
 	</head>
 	<body>
 		<?php
-		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === TRUE) {
+		if (user::isLogedin()) {
 			echo 'Hello '. ucfirst($_SESSION['username']) . '<br>';
 			echo "<a href='?logout=true'>logout</a>";
 		} else {
@@ -45,7 +28,7 @@ if (isset($_POST['username'])) {
 					<form action="#" method="POST">
 					<fieldset>
 						<div class="inputcontainer">
-							<label for="username">Username:</label>
+							<label for="username">Username/E-mail:</label>
 							<input id="username" type="text" name="username">
 						</div>
 						<div class="inputcontainer">
