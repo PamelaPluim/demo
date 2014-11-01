@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'class.database.php';
+require_once 'class.database.php';
 
 class user {
 	public static function logout(){
@@ -31,6 +31,7 @@ class user {
 			if ($row['password'] == md5($password)) {
 				$_SESSION['loggedin'] = true;
 				$_SESSION['username'] = $row['username'];
+				$_SESSION['userId'] = $row['id'];
 			}
 		}
 	}

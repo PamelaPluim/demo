@@ -27,7 +27,7 @@ if (isset($_POST['submit'])){
 						<div claas="inputcontainer">
 							<label for="email">E-mail:</label></br>
 							<input id="email" type="text" name="email">
-							</div>
+						</div>
 						<div class="inputcontainer">
 							<label for="password">Password:</label>
 							<input class="check" id="password" type="password" name="password">

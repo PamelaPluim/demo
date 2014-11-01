@@ -1,10 +1,11 @@
 <?php
 require './class.user.php';
+require_once './class.character.php';
 
 
 if (isset($_GET['logout'])) {
 	user::logout();
-	header('Location: /week2/startpagina.php');
+	header('Location: startpagina.php');
 }
 
 if (isset($_POST['username'])) {
@@ -23,6 +24,17 @@ if (isset($_POST['username'])) {
 		if (user::isLogedin()) {
 			echo 'Hello '. ucfirst($_SESSION['username']) . '<br>';
 			echo "<a href='?logout=true'>logout</a>";
+			echo "<a href='addCharacter.php'>Add character</a>";
+			$sTable = "<table>";
+			
+			foreach(character::getCharactersFromUser($_SESSION['userId']) as $k => $v){
+				$sTable .= "<tr>";
+				$sTable .= "<td>".$v['character']."</td>";
+				$sTable .= "<td><a href='server.php?server=".$v['server']."'>".$v['server']."</a></td>";
+				$sTable .= "</tr>";
+			}
+			$sTable .= "</table>";
+			echo $sTable;
 		} else {
 			echo '
 					<form action="#" method="POST">
